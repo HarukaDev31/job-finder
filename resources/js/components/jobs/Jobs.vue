@@ -543,6 +543,10 @@ export default {
       this.loadJobs(page)
     },
     onPerPageChanged(perPage) {
+      // Actualizar el per_page en la paginación
+      if (this.pagination) {
+        this.pagination.per_page = perPage
+      }
       this.loadJobs(1) // Reset to first page with new per_page
     }
   }

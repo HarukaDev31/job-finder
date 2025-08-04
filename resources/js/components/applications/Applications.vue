@@ -367,6 +367,10 @@ export default {
       this.loadApplications(page)
     },
     onApplicationsPerPageChanged(perPage) {
+      // Actualizar el per_page en la paginación
+      if (this.applicationsPagination) {
+        this.applicationsPagination.per_page = perPage
+      }
       this.loadApplications(1)
     }
   }

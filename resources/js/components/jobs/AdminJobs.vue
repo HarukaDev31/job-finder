@@ -677,12 +677,20 @@ export default {
       this.loadJobs(page)
     },
     onJobsPerPageChanged(perPage) {
+      // Actualizar el per_page en la paginación
+      if (this.jobsPagination) {
+        this.jobsPagination.per_page = perPage
+      }
       this.loadJobs(1)
     },
     onJobApplicationsPageChanged(page) {
       this.loadJobApplications(page)
     },
     onJobApplicationsPerPageChanged(perPage) {
+      // Actualizar el per_page en la paginación
+      if (this.jobApplicationsPagination) {
+        this.jobApplicationsPagination.per_page = perPage
+      }
       this.loadJobApplications(1)
     }
   }
