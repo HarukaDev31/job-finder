@@ -34,15 +34,13 @@ Un sistema completo de gestión de empleos desarrollado con Laravel y Vue.js, qu
 ### Backend
 - **Laravel 10** - Framework PHP
 - **MySQL 8.0** - Base de datos
-- **Redis** - Cache y sesiones
 - **JWT** - Autenticación
 - **PHPUnit** - Testing
 
 ### Frontend
-- **Vue.js 3** - Framework JavaScript
+- **Vue.js 2.7** - Framework JavaScript
 - **BootstrapVue** - UI Components
 - **Vue-Chartjs** - Gráficos
-- **Vee-Validate** - Validación de formularios
 - **Axios** - Cliente HTTP
 
 ### DevOps
@@ -56,7 +54,6 @@ Un sistema completo de gestión de empleos desarrollado con Laravel y Vue.js, qu
 - PHP 8.2+
 - Node.js 16+
 - MySQL 8.0+
-- Redis
 - Docker (opcional)
 
 ## 🚀 Instalación
@@ -129,11 +126,29 @@ docker-compose exec app npm run build
 - Frontend: http://localhost:8000
 - API: http://localhost:8000/api
 
+## 🚀 Desarrollo
+
+### Desarrollo Separado (Recomendado)
+```bash
+# Terminal 1 - Backend
+npm run dev:backend
+
+# Terminal 2 - Frontend
+npm run dev:frontend
+```
+
+### Desarrollo Híbrido
+```bash
+php artisan serve --port=8000
+npm run dev
+```
+
 ## 📚 Documentación
 
 - [API Documentation](API_DOCUMENTATION.md) - Documentación completa de la API
 - [Docker Setup](DOCKER_README.md) - Guía de instalación con Docker
 - [Project Structure](PROJECT_STRUCTURE.md) - Estructura del proyecto
+- [Development Guide](DEVELOPMENT.md) - Guía de desarrollo
 
 ## 🧪 Testing
 
@@ -194,7 +209,7 @@ job-finder/
 - **Componentes Reutilizables** - Paginación, gráficos, etc.
 - **Mixins** - Lógica compartida
 - **Servicios** - Separación de peticiones HTTP
-- **Validación en Tiempo Real** - Vee-Validate
+- **Desarrollo Separado** - Frontend y backend independientes
 
 ### Base de Datos
 - **Migraciones Optimizadas** - Estructura eficiente
