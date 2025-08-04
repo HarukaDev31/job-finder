@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: job-finder-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - job-finder-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: job-finder-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - job-finder-network
+
+  db:
+    image: mysql:8.0
+    container_name: job-finder-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: job_finder
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: password
+      MYSQL_USER: job_finder
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - dbdata:/var/lib/mysql
+    networks:
+      - job-finder-network
+
+  redis:
+    image: redis:alpine
+    container_name: job-finder-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - job-finder-network
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  job-finder-network:
+    driver: bridge 
