@@ -225,6 +225,7 @@
 <script>
 import Pagination from '@/components/common/Pagination.vue'
 import applicationStatusMixin from '@/mixins/applicationStatusMixin.js'
+import statusOptionsMixin from '@/mixins/statusOptionsMixin.js'
 import applicationService from '@/services/applicationService'
 
 export default {
@@ -232,7 +233,7 @@ export default {
   components: {
     Pagination
   },
-  mixins: [applicationStatusMixin],
+  mixins: [applicationStatusMixin, statusOptionsMixin],
   data() {
     return {
       loading: false,

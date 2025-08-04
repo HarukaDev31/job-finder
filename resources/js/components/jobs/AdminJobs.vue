@@ -363,6 +363,7 @@
 <script>
 import alertMixin from '@/mixins/alertMixin.js'
 import applicationStatusMixin from '@/mixins/applicationStatusMixin.js'
+import statusOptionsMixin from '@/mixins/statusOptionsMixin.js'
 import Pagination from '@/components/common/Pagination.vue'
 import jobService from '@/services/jobService'
 import dashboardService from '@/services/dashboardService'
@@ -370,7 +371,7 @@ import applicationService from '@/services/applicationService'
 
 export default {
   name: 'AdminJobs',
-  mixins: [alertMixin, applicationStatusMixin],
+  mixins: [alertMixin, applicationStatusMixin, statusOptionsMixin],
   components: {
     Pagination
   },
