@@ -6,4 +6,5 @@ export * from './Auth';
 export * from './charts';
 
 export { default as Home } from './Home.vue';
-export { default as App } from './layout/App.vue'; 
+export { default as App } from './layout/App.vue';
+export { default as ImportExcel } from './admin/ImportExcel.vue'; 

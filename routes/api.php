@@ -13,3 +13,4 @@ require __DIR__ . '/api/user.php';
 require __DIR__ . '/api/admin/applications.php';
 require __DIR__ . '/api/admin/dashboard.php';
 require __DIR__ . '/api/admin/jobs.php';
+require __DIR__ . '/api/import.php';
