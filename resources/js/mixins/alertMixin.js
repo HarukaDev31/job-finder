@@ -10,7 +10,6 @@ export default {
   },
   
   methods: {
-    // Mostrar alerta de éxito
     showSuccessAlert(title, message) {
       this.showAlert = true
       this.alertType = 'success'
@@ -19,7 +18,6 @@ export default {
       this.alertIcon = 'fas fa-check-circle'
     },
     
-    // Mostrar alerta de error
     showErrorAlert(title, message) {
       this.showAlert = true
       this.alertType = 'danger'
@@ -28,7 +26,6 @@ export default {
       this.alertIcon = 'fas fa-exclamation-triangle'
     },
     
-    // Mostrar alerta de advertencia
     showWarningAlert(title, message) {
       this.showAlert = true
       this.alertType = 'warning'
@@ -37,7 +34,6 @@ export default {
       this.alertIcon = 'fas fa-exclamation-circle'
     },
     
-    // Mostrar alerta de información
     showInfoAlert(title, message) {
       this.showAlert = true
       this.alertType = 'info'
@@ -46,7 +42,6 @@ export default {
       this.alertIcon = 'fas fa-info-circle'
     },
     
-    // Mostrar alerta de error con validación
     showValidationError(errors) {
       let message = 'Por favor, corrige los siguientes errores:'
       
@@ -74,7 +69,6 @@ export default {
       this.showErrorAlert('Error de Validación', message)
     },
     
-    // Cerrar alerta
     closeAlert() {
       this.showAlert = false
       this.alertTitle = ''
@@ -82,7 +76,6 @@ export default {
       this.alertIcon = ''
     },
     
-    // Mostrar alerta automáticamente y cerrarla después de un tiempo
     showAutoCloseAlert(type, title, message, duration = 5000) {
       this[`show${type.charAt(0).toUpperCase() + type.slice(1)}Alert`](title, message)
       

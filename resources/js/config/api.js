@@ -1,29 +1,23 @@
-// Configuración de la API
 const API_CONFIG = {
-  // URL base de la API
-  baseURL: '/api',
+  baseURL: process.env.NODE_ENV === 'development' && window.location.port === '5173' 
+    ? 'http://localhost:8000/api' 
+    : '/api',
   
-  // Rutas de autenticación
   auth: {
-    login: '/api/auth/login',
-    register: '/api/auth/register',
-    logout: '/api/auth/logout',
-    refresh: '/api/auth/refresh',
-    me: '/api/auth/me'
+    login: '/auth/login',
+    register: '/auth/register',
+    logout: '/auth/logout',
+    refresh: '/auth/refresh',
+    me: '/auth/me'
   },
   
-  // Headers por defecto
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
   
-  // Configuración de JWT
   jwt: {
-    // Tiempo de expiración en minutos (debe coincidir con config/jwt.php)
     expiresIn: 60,
-    
-    // Tiempo antes de expirar para refrescar automáticamente (en minutos)
     refreshBeforeExpiry: 5
   }
 }

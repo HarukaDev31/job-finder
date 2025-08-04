@@ -49,7 +49,6 @@ const routes = [
     component: Applications,
     meta: { requiresAuth: true }
   },
-  // Rutas de administrador
   {
     path: '/admin/dashboard',
     name: 'AdminDashboard',
@@ -72,24 +71,21 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/',
+  base: process.env.NODE_ENV === 'development' ? '/' : '/',
   routes
 })
 
-// Navigation guards
 router.beforeEach(async (to, from, next) => {
   const isAuthenticated = authService.isAuthenticated()
   const user = authService.getUser()
   const isAdmin = authService.isAdmin()
 
-  // Si la ruta requiere autenticación
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
       next('/login')
       return
     }
 
-    // Si la ruta requiere ser admin
     if (to.matched.some(record => record.meta.requiresAdmin)) {
       if (!isAdmin) {
         next('/dashboard')
@@ -98,7 +94,6 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  // Si el usuario está autenticado y trata de ir a login/register
   if (isAuthenticated && (to.name === 'Login' || to.name === 'Register')) {
     if (isAdmin) {
       next('/admin/dashboard')

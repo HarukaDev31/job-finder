@@ -1,18 +1,29 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue2';
 
 export default defineConfig({
     plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
         vue(),
     ],
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm.js',
+            '@': '/resources/js',
+        },
+    },
+    server: {
+        port: 5173,
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+        },
+    },
+    build: {
+        outDir: 'public/build',
+        assetsDir: 'assets',
+        manifest: true,
+        rollupOptions: {
+            input: 'resources/js/app.js',
         },
     },
 });

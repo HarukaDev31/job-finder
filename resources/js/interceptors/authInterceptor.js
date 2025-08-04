@@ -1,8 +1,15 @@
 import axios from 'axios';
 import authService from '@/services/auth';
 import { isPublicRoute } from '../config/publicRoutes';
+import { API_CONFIG } from '../config/api';
 
-axios.interceptors.request.use(
+const apiClient = axios.create({
+    baseURL: API_CONFIG.baseURL,
+    headers: API_CONFIG.headers,
+    withCredentials: true
+});
+
+apiClient.interceptors.request.use(
     (config) => {
         if (!isPublicRoute(config.url)) {
             const token = authService.getToken();
@@ -18,4 +25,4 @@ axios.interceptors.request.use(
     }
 );
 
-export default axios; 
+export default apiClient; 

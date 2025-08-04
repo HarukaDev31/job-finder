@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- Navigation -->
     <b-navbar toggleable="lg" type="dark" :variant="navbarVariant" class="fixed-top">
       <b-navbar-brand href="#" @click="goHome">
         <i class="fas fa-briefcase mr-2"></i>
@@ -10,9 +9,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <!-- Navigation for authenticated users -->
         <b-navbar-nav v-if="isAuthenticated">
-          <!-- Admin Navigation -->
           <template v-if="isAdmin">
             <b-nav-item to="/admin/dashboard" exact>
               <i class="fas fa-tachometer-alt mr-1"></i>
@@ -28,7 +25,6 @@
             </b-nav-item>
           </template>
           
-          <!-- Postulante Navigation -->
           <template v-else>
             <b-nav-item to="/dashboard" exact>
               <i class="fas fa-tachometer-alt mr-1"></i>
@@ -45,7 +41,6 @@
           </template>
         </b-navbar-nav>
 
-        <!-- Navigation for guests -->
         <b-navbar-nav v-else>
           <b-nav-item to="/" exact>
             <i class="fas fa-home mr-1"></i>
@@ -54,7 +49,6 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <!-- User Menu -->
           <b-nav-item-dropdown v-if="isAuthenticated" right>
             <template #button-content>
               <i class="fas fa-user-circle mr-1"></i>
@@ -67,7 +61,6 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
           
-          <!-- Guest Menu -->
           <template v-else>
             <b-nav-item to="/login">
               <i class="fas fa-sign-in-alt mr-1"></i>
@@ -82,15 +75,12 @@
       </b-collapse>
     </b-navbar>
 
-    <!-- Main Content -->
     <div class="container-fluid main-content">
       <router-view @auth-updated="updateAuthState"></router-view>
     </div>
 
-    <!-- Toast Container -->
     <div id="toast-container"></div>
 
-    <!-- Loading Overlay -->
     <div v-if="globalLoading" class="loading-overlay">
       <div class="loading-content">
         <b-spinner variant="primary" label="Cargando..."></b-spinner>
@@ -156,9 +146,7 @@ export default {
       }
     },
     updateAuthState(userData) {
-      // El estado se actualiza automáticamente a través del servicio
       this.$nextTick(() => {
-        // Redirigir según el rol después del login/registro
         if (userData.role === 'admin') {
           this.$router.push('/admin/dashboard')
         } else {
@@ -183,7 +171,6 @@ export default {
     hideGlobalLoading() {
       this.globalLoading = false
     },
-    // Método para manejar cambios en el estado de autenticación
     handleAuthChange(authData) {
       this.authState = {
         isAuthenticated: authData.isAuthenticated,
@@ -193,32 +180,38 @@ export default {
     }
   },
   mounted() {
-    // Configurar axios con el token CSRF para rutas que lo necesiten
     if (window.appConfig?.csrfToken) {
       axios.defaults.headers.common['X-CSRF-TOKEN'] = window.appConfig.csrfToken
     }
 
-    // Inicializar el estado de autenticación
     this.authState = {
       isAuthenticated: authService.isAuthenticated(),
       user: authService.getUser(),
       isAdmin: authService.isAdmin()
     }
 
-    // Suscribirse a cambios en el estado de autenticación
     this.unsubscribe = authService.subscribe(this.handleAuthChange)
 
-    // Verificar si hay un token válido al cargar la app
     if (authService.isAuthenticated()) {
-      authService.getCurrentUser().catch(() => {
-        // Si no se puede obtener el usuario, limpiar la sesión
-        authService.logout()
-        this.$router.push('/login')
-      })
+      this.globalLoading = true
+      
+      authService.getCurrentUser()
+        .then(user => {
+          if (user) {
+            console.log('Usuario verificado:', user)
+          }
+        })
+        .catch(error => {
+          console.error('Error al verificar usuario:', error)
+          authService.logout()
+          this.$router.push('/login')
+        })
+        .finally(() => {
+          this.globalLoading = false
+        })
     }
   },
   beforeDestroy() {
-    // Limpiar la suscripción cuando el componente se destruye
     if (this.unsubscribe) {
       this.unsubscribe()
     }
@@ -243,15 +236,8 @@ export default {
 }
 
 .main-content {
-  padding-top: 80px; /* Espacio para el navbar fijo */
-  min-height: calc(100vh - 80px); /* Altura mínima considerando el navbar */
-}
-
-#toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
 }
 
 .loading-overlay {
@@ -264,14 +250,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 9999;
 }
 
 .loading-content {
-  background-color: white;
+  background: white;
   padding: 2rem;
   border-radius: 8px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
 }
 </style> 
